@@ -5,21 +5,16 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Role-Based API", version="1.0")
 
-# ─── CORS: Production Origins from ENV ─────────────────────
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
-if not allowed_origins or allowed_origins == [""]:
-    allowed_origins = [
-        "http://localhost",
-        "http://localhost:4200",
-        "http://127.0.0.1:4200"
-    ]
+origins = [
+    "http://192.46.211.180",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,# List of allowed origins
-    allow_credentials=True,       # Allow cookies / Authorization headers
-    allow_methods=["*"],          # Allow all HTTP methods (GET, POST, PATCH, DELETE, etc.)
-    allow_headers=["*"],          # Allow all headers
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(auth.router)
