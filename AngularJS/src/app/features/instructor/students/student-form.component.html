@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <h2>{{ isEdit ? 'Edit' : 'Add' }} Student</h2>
+  <div class="card">
+    <div class="card-body">
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+      <form (ngSubmit)="onSubmit()" #studentForm="ngForm">
+        <div class="mb-3" *ngIf="!isEdit">
+          <label class="form-label">User</label>
+          <select class="form-select" [(ngModel)]="$any(student).user_id" name="user_id" required>
+            <option *ngFor="let user of users$ | async" [ngValue]="user.id">{{ user.username }} ({{ user.email }})</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Enrollment No</label>
+          <input type="text" class="form-control" [(ngModel)]="student.enrollment_no" name="enrollment_no" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Course</label>
+          <input type="text" class="form-control" [(ngModel)]="student.course" name="course" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Year</label>
+          <input type="number" class="form-control" [(ngModel)]="student.year" name="year" required min="1" max="5">
+        </div>
+        <button type="submit" class="btn btn-primary">{{ isEdit ? 'Update' : 'Create' }}</button>
+        <a routerLink="/instructor/students" class="btn btn-secondary ms-2">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>

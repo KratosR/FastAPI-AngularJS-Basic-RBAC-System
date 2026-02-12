@@ -1,0 +1,39 @@
+<div class="container mt-4">
+  <h2>My Profile</h2>
+  <div *ngIf="user" class="card">
+    <div class="card-body">
+      <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+      <div *ngIf="!editMode">
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Role:</strong> {{ user.role?.role_name }}</p>
+        <p><strong>Status:</strong>
+          <span class="badge" [ngClass]="{
+            'bg-success': user.status === 'active',
+            'bg-secondary': user.status === 'inactive',
+            'bg-danger': user.status === 'suspended'
+          }">{{ user.status }}</span>
+        </p>
+        <button class="btn btn-primary" (click)="toggleEdit()">Edit Profile</button>
+      </div>
+      <div *ngIf="editMode">
+        <form (ngSubmit)="updateProfile()" #profileForm="ngForm">
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" [(ngModel)]="updateData.email" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select class="form-select" [(ngModel)]="updateData.status" name="status">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success">Save</button>
+          <button type="button" class="btn btn-secondary ms-2" (click)="toggleEdit()">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!user" class="alert alert-warning">Loading profile...</div>
+</div>

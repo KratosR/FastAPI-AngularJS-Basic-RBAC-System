@@ -1,0 +1,6 @@
+FastAPI/env
+FastAPI/app/__pycache__
+FastAPI/app/routes/__pycache__
+FastAPI/scripts/__pycache__
+AngularJS/.angular
+AngularJS/node_modules

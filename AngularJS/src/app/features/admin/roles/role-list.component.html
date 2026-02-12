@@ -1,0 +1,55 @@
+<div class="container mt-4">
+  <h2>Role Management</h2>
+  <button class="btn btn-success mb-3" (click)="showCreateForm = !showCreateForm">
+    <i class="fa fa-plus"></i> New Role
+  </button>
+
+  <div *ngIf="showCreateForm" class="card mb-4">
+    <div class="card-header bg-primary text-white">Create Role</div>
+    <div class="card-body">
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+      <form (ngSubmit)="createRole()">
+        <div class="mb-3">
+          <label class="form-label">Role Name</label>
+          <input type="text" class="form-control" [(ngModel)]="newRole.role_name" name="role_name" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Parent Role (optional)</label>
+          <select class="form-select" [(ngModel)]="newRole.parent_id" name="parent_id">
+            <option [ngValue]="null">None</option>
+            <option *ngFor="let role of roles$ | async" [ngValue]="role.id">{{ role.role_name }}</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="button" class="btn btn-secondary ms-2" (click)="showCreateForm = false">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Role Name</th>
+          <th>Parent</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let role of roles$ | async">
+          <td>{{ role.id }}</td>
+          <td>{{ role.role_name }}</td>
+          <td>{{ role.parent_id ? getParentRoleName(role.parent_id) : '—' }}</td>
+          <td>{{ role.created_at | date }}</td>
+          <td>
+            <button class="btn btn-sm btn-danger" (click)="deleteRole(role.id)">
+              <i class="fa fa-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

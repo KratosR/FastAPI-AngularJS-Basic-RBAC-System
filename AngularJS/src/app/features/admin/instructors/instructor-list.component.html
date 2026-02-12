@@ -1,0 +1,71 @@
+<div class="container mt-4">
+  <h2>Instructor Management</h2>
+  <button class="btn btn-success mb-3" (click)="showCreateForm = !showCreateForm">
+    <i class="fa fa-plus"></i> Add Instructor
+  </button>
+
+  <div *ngIf="showCreateForm" class="card mb-4">
+    <div class="card-header bg-primary text-white">Create Instructor Record</div>
+    <div class="card-body">
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+      <form (ngSubmit)="createInstructor()" #instructorForm="ngForm">
+        <div class="mb-3">
+          <label class="form-label">User</label>
+          <select class="form-select" [(ngModel)]="newInstructor.user_id" name="user_id" required>
+            <option *ngFor="let user of users$ | async" [ngValue]="user.id">{{ user.username }} ({{ user.email }})</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Department</label>
+          <input type="text" class="form-control" [(ngModel)]="newInstructor.department" name="department" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Qualification</label>
+          <input type="text" class="form-control" [(ngModel)]="newInstructor.qualification" name="qualification" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="button" class="btn btn-secondary ms-2" (click)="showCreateForm = false">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Department</th>
+          <th>Qualification</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let instructor of instructors$ | async">
+          <td>{{ instructor.id }}</td>
+          <td>{{ instructor.user_id }} (user)</td>
+          <td>
+            <span *ngIf="!editing || editingId !== instructor.id">{{ instructor.department }}</span>
+            <input *ngIf="editing && editingId === instructor.id" type="text" class="form-control" [(ngModel)]="instructor.department">
+          </td>
+          <td>
+            <span *ngIf="!editing || editingId !== instructor.id">{{ instructor.qualification }}</span>
+            <input *ngIf="editing && editingId === instructor.id" type="text" class="form-control" [(ngModel)]="instructor.qualification">
+          </td>
+          <td>{{ instructor.created_at | date }}</td>
+          <td>
+            <ng-container *ngIf="!editing || editingId !== instructor.id">
+              <button class="btn btn-sm btn-warning me-2" (click)="startEdit(instructor)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteInstructor(instructor.id)">Delete</button>
+            </ng-container>
+            <ng-container *ngIf="editing && editingId === instructor.id">
+              <button class="btn btn-sm btn-success me-2" (click)="saveEdit(instructor)">Save</button>
+              <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">Cancel</button>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

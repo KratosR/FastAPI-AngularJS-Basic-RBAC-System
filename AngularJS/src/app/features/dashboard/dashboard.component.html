@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <h1>Dashboard</h1>
+  <div *ngIf="user" class="alert alert-info">
+    Welcome back, <strong>{{ user.username }}</strong>! You are logged in as <span class="badge bg-primary">{{ user.role?.role_name }}</span>.
+  </div>
+  <div *ngIf="!user" class="alert alert-secondary">Loading...</div>
+  <div class="row mt-4">
+    <div class="col-md-4 mb-3" *ngIf="authService.hasPermission('admin')">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fa fa-shield"></i> Admin Panel</h5>
+          <p class="card-text">Manage roles, users, and instructors.</p>
+          <a routerLink="/admin/roles" class="btn btn-light">Go to Admin</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3" *ngIf="authService.hasPermission('instructor')">
+      <div class="card text-white bg-success">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fa fa-graduation-cap"></i> Instructor</h5>
+          <p class="card-text">Manage students and their records.</p>
+          <a routerLink="/instructor/students" class="btn btn-light">View Students</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-info">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fa fa-user"></i> My Profile</h5>
+          <p class="card-text">View and edit your profile information.</p>
+          <a routerLink="/profile" class="btn btn-light">Go to Profile</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
